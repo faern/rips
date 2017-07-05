@@ -2,7 +2,7 @@ use macaddr::MacAddr;
 
 packet!(EthernetPacket, MutEthernetPacket, 14);
 
-impl<'a> EthernetPacket<'a> {
+getters!(EthernetPacket
     pub fn destination(&self) -> MacAddr {
         MacAddr::from_slice(&self.0[0..6])
     }
@@ -14,9 +14,9 @@ impl<'a> EthernetPacket<'a> {
     pub fn ether_type(&self) -> EtherType {
         EtherType(read_offset!(self.0, 12, u16, from_be))
     }
-}
+);
 
-impl<'a> MutEthernetPacket<'a> {
+setters!(MutEthernetPacket
     pub fn set_destination(&mut self, destination: MacAddr) {
         self.0[0..6].copy_from_slice(destination.as_ref());
     }
@@ -28,13 +28,14 @@ impl<'a> MutEthernetPacket<'a> {
     pub fn set_ether_type(&mut self, ether_type: EtherType) {
         write_offset!(self.0, 12, ether_type.value(), u16, to_be)
     }
-}
+);
 
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct EtherType(pub u16);
 
 impl EtherType {
+    #[inline]
     pub fn value(&self) -> u16 {
         self.0
     }

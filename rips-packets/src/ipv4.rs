@@ -15,7 +15,7 @@ pub mod flags {
 
 packet!(Ipv4Packet, MutIpv4Packet, 20);
 
-impl<'a> Ipv4Packet<'a> {
+getters!(Ipv4Packet
     pub fn version(&self) -> u4 {
         read_offset!(self.0, 0, u8) >> 4
     }
@@ -60,8 +60,8 @@ impl<'a> Ipv4Packet<'a> {
         read_offset!(self.0, 8, u8)
     }
 
-    pub fn protocol(&self) -> u8 {
-        read_offset!(self.0, 9, u8)
+    pub fn protocol(&self) -> Protocol {
+        Protocol(read_offset!(self.0, 9, u8))
     }
 
     pub fn header_checksum(&self) -> u16 {
@@ -75,9 +75,9 @@ impl<'a> Ipv4Packet<'a> {
     pub fn destination(&self) -> Ipv4Addr {
         Ipv4Addr::from(read_offset!(self.0, 16, [u8; 4]))
     }
-}
+);
 
-impl<'a> MutIpv4Packet<'a> {
+setters!(MutIpv4Packet
     pub fn set_version(&mut self, version: u4) {
         let new_byte = (version << 4) | (read_offset!(self.0, 0, u8) & 0x0f);
         write_offset!(self.0, 0, new_byte, u8);
@@ -121,8 +121,8 @@ impl<'a> MutIpv4Packet<'a> {
         write_offset!(self.0, 8, ttl, u8);
     }
 
-    pub fn set_protocol(&mut self, protocol: u8) {
-        write_offset!(self.0, 9, protocol, u8);
+    pub fn set_protocol(&mut self, protocol: Protocol) {
+        write_offset!(self.0, 9, protocol.value(), u8);
     }
 
     pub fn set_header_checksum(&mut self, checksum: u16) {
@@ -136,8 +136,26 @@ impl<'a> MutIpv4Packet<'a> {
     pub fn set_destination(&mut self, destination: Ipv4Addr) {
         write_offset!(self.0, 16, destination.octets(), [u8; 4]);
     }
+);
+
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+pub struct Protocol(pub u8);
+
+impl Protocol {
+    #[inline]
+    pub fn value(&self) -> u8 {
+        self.0
+    }
 }
 
+pub mod protocols {
+    use super::Protocol;
+
+    pub const ICMP: Protocol = Protocol(1);
+    pub const TCP: Protocol = Protocol(6);
+    pub const UDP: Protocol = Protocol(17);
+}
 
 
 #[cfg(test)]
@@ -165,7 +183,7 @@ mod tests {
         [0x1f, 0xaf]
     );
     ipv4_setget_test!(ttl, set_ttl, 0xff, 8, [0xff]);
-    ipv4_setget_test!(protocol, set_protocol, 0xff, 9, [0xff]);
+    ipv4_setget_test!(protocol, set_protocol, Protocol(0xff), 9, [0xff]);
     ipv4_setget_test!(
         header_checksum,
         set_header_checksum,

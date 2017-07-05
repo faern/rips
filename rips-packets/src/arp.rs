@@ -4,7 +4,7 @@ use std::net::Ipv4Addr;
 
 packet!(ArpPacket, MutArpPacket, 28);
 
-impl<'a> ArpPacket<'a> {
+getters!(ArpPacket
     pub fn hardware_type(&self) -> HardwareType {
         HardwareType(read_offset!(self.0.as_ref(), 0, u16, from_be))
     }
@@ -40,7 +40,7 @@ impl<'a> ArpPacket<'a> {
     pub fn target_ip_addr(&self) -> Ipv4Addr {
         Ipv4Addr::from(read_offset!(self.0.as_ref(), 24, [u8; 4]))
     }
-}
+);
 
 impl<'a> MutArpPacket<'a> {
     /// Sets the hardware_type, hardware_length, protocol_type and
@@ -52,7 +52,9 @@ impl<'a> MutArpPacket<'a> {
         self.set_hardware_length(6);
         self.set_protocol_length(4);
     }
+}
 
+setters!(MutArpPacket
     pub fn set_hardware_type(&mut self, hardware_type: HardwareType) {
         write_offset!(self.0, 0, hardware_type.value(), u16, to_be)
     }
@@ -88,7 +90,7 @@ impl<'a> MutArpPacket<'a> {
     pub fn set_target_ip_addr(&mut self, target_ip: Ipv4Addr) {
         self.0[24..28].copy_from_slice(&target_ip.octets());
     }
-}
+);
 
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
