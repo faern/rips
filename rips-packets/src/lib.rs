@@ -1,7 +1,6 @@
 //! # Overview
 //!
-//! Network protocol packet representations.
-//! The goal with `rips-packets` is to create types that encapsulate byte
+//! Network protocol packet representations. types that encapsulate byte
 //! slices (`&[u8]`) in a zero allocation, zero copy, zero-cost way and provide
 //! getter and setter methods for the fields in the corresponding protocols.
 //!
@@ -19,7 +18,7 @@
 //! (`syntex`), and somewhat limits what a packet can do. In comparison
 //! `rips-packets` aims to have no/very few dependencies at the cost of more
 //! manual work to implement each protocol representation. A benefit of the
-//! more manual implementations is that it's easy to hand optimize single
+//! more manual implementations is that it is easy to hand optimize single
 //! getters or setters if needed.
 
 #[macro_use]
