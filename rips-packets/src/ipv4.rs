@@ -1,18 +1,6 @@
 use std::net::Ipv4Addr;
 use types::*;
 
-/// Bitmasks for the three bit flags field in IPv4
-pub mod flags {
-    use types::*;
-
-    /// A bitmask with a one in the "Reserved" position.
-    pub static RESERVED: u3 = 0b100;
-    /// A bitmask with a one in the "Don't fragment" position.
-    pub static DF: u3 = 0b010;
-    /// A bitmask with a one in the "More fragments" position.
-    pub static MF: u3 = 0b001;
-}
-
 packet!(Ipv4Packet, MutIpv4Packet, 20);
 
 getters!(Ipv4Packet
@@ -137,6 +125,19 @@ setters!(MutIpv4Packet
         write_offset!(self.0, 16, destination.octets(), [u8; 4]);
     }
 );
+
+
+/// Bitmasks for the three bit flags field in IPv4
+pub mod flags {
+    use types::*;
+
+    /// A bitmask with a one in the "Reserved" position.
+    pub static RESERVED: u3 = 0b100;
+    /// A bitmask with a one in the "Don't fragment" position.
+    pub static DF: u3 = 0b010;
+    /// A bitmask with a one in the "More fragments" position.
+    pub static MF: u3 = 0b001;
+}
 
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
