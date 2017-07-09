@@ -1,7 +1,6 @@
 extern crate rips_packets;
 
-use rips_packets::ethernet::{EthernetPacket, MutEthernetPacket, ether_types};
-use rips_packets::macaddr::MacAddr;
+use rips_packets::ethernet::{EthernetPacket, MacAddr, MutEthernetPacket, ether_types};
 
 fn main() {
     // Allocate a byte buffer that represents the bytes in the Ethernet frame.

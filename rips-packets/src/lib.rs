@@ -24,12 +24,12 @@
 #[macro_use]
 mod macros;
 
+/// Link layer primitives.
 pub mod ethernet;
+
 pub mod arp;
 pub mod ipv4;
 
-/// Link layer MAC address primitives.
-pub mod macaddr;
 
 /// Bit field type aliases.
 pub mod types;

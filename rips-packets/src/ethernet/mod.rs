@@ -1,4 +1,5 @@
-use macaddr::MacAddr;
+mod macaddr;
+pub use self::macaddr::*;
 
 packet!(EthernetPacket, MutEthernetPacket, 14);
 

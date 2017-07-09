@@ -1,8 +1,7 @@
 extern crate rips_packets;
 
 use rips_packets::arp::{MutArpPacket, operations};
-use rips_packets::ethernet::{MutEthernetPacket, ether_types};
-use rips_packets::macaddr::{BROADCAST_MAC, MacAddr};
+use rips_packets::ethernet::{BROADCAST_MAC, MacAddr, MutEthernetPacket, ether_types};
 
 use std::net::Ipv4Addr;
 
