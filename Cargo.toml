@@ -1,2 +1,2 @@
 [workspace]
-members = ["rips-packets"]
+members = ["packets"]
