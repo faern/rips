@@ -1,0 +1,11 @@
+[package]
+name = "rips-core"
+version = "0.1.0"
+authors = ["Linus Färnstrand <faern@faern.net>"]
+
+[dependencies]
+rips-packets = { path = "../packets" }
+
+
+[dev-dependencies]
+assert_matches = "1.1"
