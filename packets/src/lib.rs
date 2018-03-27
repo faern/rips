@@ -31,7 +31,9 @@ mod macros;
 pub mod ethernet;
 
 pub mod arp;
+pub mod ip;
 pub mod ipv4;
+pub mod ipv6;
 
 
 /// Bit field type aliases.
