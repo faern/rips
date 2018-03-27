@@ -2,5 +2,10 @@
 name = "rips-packets"
 version = "0.1.0"
 authors = ["Linus Färnstrand <faern@faern.net>"]
+description = "Fast network packet parsing and manipulation"
+keywords = ["rips", "packet", "ip", "header"]
+categories = ["encoding", "network-programming"]
+repository = "https://github.com/faern/rips"
+license = "MIT/Apache-2.0"
 
 [dependencies]
