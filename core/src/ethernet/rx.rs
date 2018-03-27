@@ -1,4 +1,4 @@
-use rips_packets::ethernet::{EtherType, EthernetPacket, MacAddr, ether_types};
+use rips_packets::ethernet::{ether_types, EtherType, EthernetPacket, MacAddr};
 use std::io;
 
 pub trait EthernetPayloadListener<E: ::std::error::Error> {
@@ -72,7 +72,6 @@ ethernet_rx!(EthernetRx, EthernetRxError {
 });
 
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -133,7 +132,10 @@ mod tests {
             packet.set_destination(MY_MAC);
         }
 
-        assert_matches!(rx.recv(&data), Err(ErrorEthernetRxError::IgnoredEtherType(EtherType(0))));
+        assert_matches!(
+            rx.recv(&data),
+            Err(ErrorEthernetRxError::IgnoredEtherType(EtherType(0)))
+        );
     }
 
     #[test]

@@ -1,6 +1,6 @@
+use std::error::Error;
 use std::fmt;
 use std::str::FromStr;
-use std::error::Error;
 
 /// The broadcast MAC address. Used to broadcast to the local network.
 pub static BROADCAST_MAC: MacAddr = MacAddr([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
@@ -111,12 +111,7 @@ impl fmt::Display for MacAddr {
         write!(
             f,
             "{:02x}:{:02x}:{:02x}:{:02x}:{:02x}:{:02x}",
-            self.0[0],
-            self.0[1],
-            self.0[2],
-            self.0[3],
-            self.0[4],
-            self.0[5]
+            self.0[0], self.0[1], self.0[2], self.0[3], self.0[4], self.0[5]
         )
     }
 }

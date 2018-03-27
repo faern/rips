@@ -1,4 +1,4 @@
-use ethernet::{EtherType, MacAddr, ether_types};
+use ethernet::{ether_types, EtherType, MacAddr};
 use std::net::Ipv4Addr;
 
 packet!(ArpPacket, MutArpPacket, 28);
