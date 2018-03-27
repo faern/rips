@@ -9,3 +9,4 @@ repository = "https://github.com/faern/rips"
 license = "MIT/Apache-2.0"
 
 [dependencies]
+bitflags = "1.0"

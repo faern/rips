@@ -22,6 +22,9 @@
 //! getters or setters if needed.
 
 #[macro_use]
+extern crate bitflags;
+
+#[macro_use]
 mod macros;
 
 /// Link layer primitives.

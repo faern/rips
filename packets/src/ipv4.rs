@@ -28,16 +28,16 @@ getters!(Ipv4Packet
         read_offset!(self.0, 4, u16, from_be)
     }
 
-    pub fn flags(&self) -> u3 {
-        read_offset!(self.0, 6, u8) >> 5
+    pub fn flags(&self) -> Flags {
+        Flags::from_bits_truncate(read_offset!(self.0, 6, u8) >> 5)
     }
 
     pub fn dont_fragment(&self) -> bool {
-        (self.flags() & flags::DF) != 0
+        self.flags().contains(Flags::DF)
     }
 
     pub fn more_fragments(&self) -> bool {
-        (self.flags() & flags::MF) != 0
+        self.flags().contains(Flags::MF)
     }
 
     pub fn fragment_offset(&self) -> u13 {
@@ -94,8 +94,8 @@ setters!(MutIpv4Packet
         write_offset!(self.0, 4, identification, u16, to_be);
     }
 
-    pub fn set_flags(&mut self, flags: u3) {
-        let new_byte = (flags << 5) | (read_offset!(self.0, 6, u8) & 0x1f);
+    pub fn set_flags(&mut self, flags: Flags) {
+        let new_byte = (flags.bits() << 5) | (read_offset!(self.0, 6, u8) & 0x1f);
         write_offset!(self.0, 6, new_byte, u8);
     }
 
@@ -127,16 +127,16 @@ setters!(MutIpv4Packet
 );
 
 
-/// Bitmasks for the three bit flags field in IPv4
-pub mod flags {
-    use types::*;
-
-    /// A bitmask with a one in the "Reserved" position.
-    pub static RESERVED: u3 = 0b100;
-    /// A bitmask with a one in the "Don't fragment" position.
-    pub static DF: u3 = 0b010;
-    /// A bitmask with a one in the "More fragments" position.
-    pub static MF: u3 = 0b001;
+bitflags! {
+    /// Bitmasks for the three bit flags field in IPv4
+    pub struct Flags: u3 {
+        /// A bitmask with a one in the "Reserved" position.
+        const RESERVED = 0b100;
+        /// A bitmask with a one in the "Don't fragment" position.
+        const DF = 0b010;
+        /// A bitmask with a one in the "More fragments" position.
+        const MF = 0b001;
+    }
 }
 
 
@@ -175,7 +175,7 @@ mod tests {
     ipv4_setget_test!(ecn, set_ecn, 0x3, 1, [0x3]);
     ipv4_setget_test!(total_length, set_total_length, 0xffbf, 2, [0xff, 0xbf]);
     ipv4_setget_test!(identification, set_identification, 0xffaf, 4, [0xff, 0xaf]);
-    ipv4_setget_test!(flags, set_flags, 0b111, 6, [0xe0]);
+    ipv4_setget_test!(flags, set_flags, Flags::all(), 6, [0xe0]);
     ipv4_setget_test!(
         fragment_offset,
         set_fragment_offset,
@@ -217,7 +217,7 @@ mod tests {
         assert_eq!(0b10, testee.ecn());
         assert_eq!(0b1010_1010_1010_1010, testee.total_length());
         assert_eq!(0b1010_1010_1010_1010, testee.identification());
-        assert_eq!(0b101, testee.flags());
+        assert_eq!(Flags::RESERVED | Flags::MF, testee.flags());
         assert!(!testee.dont_fragment());
         assert!(testee.more_fragments());
         assert_eq!(0b0_1010_1010_1010, testee.fragment_offset());
