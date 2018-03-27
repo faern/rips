@@ -145,6 +145,35 @@ bitflags! {
 mod tests {
     use super::*;
 
+    #[test]
+    fn min_length() {
+        assert_eq!(Ipv4Packet::MIN_LEN, 20);
+    }
+
+    #[test]
+    fn too_short_slice() {
+        assert!(Ipv4Packet::new(&[0; 19]).is_none());
+    }
+
+    #[test]
+    fn exactly_20_bytes_slice() {
+        let packet = Ipv4Packet::new(&[1; 20]).expect("Ipv4Packet to accept 20 bytes");
+        assert_eq!(packet.data(), &[1; 20]);
+        assert_eq!(packet.header(), &[1; 20]);
+        assert!(packet.payload().is_empty());
+    }
+
+    #[test]
+    fn correct_payload() {
+        let mut data = vec![2; 19];
+        data.push(3);
+        data.push(4);
+        let packet = Ipv4Packet::new(&data[..]).expect("Ipv4Packet to accept 21 bytes");
+        assert_eq!(packet.data(), &data[..]);
+        assert_eq!(packet.header(), &data[..20]);
+        assert_eq!(packet.payload(), &[4]);
+    }
+
     macro_rules! ipv4_setget_test {
         ($name:ident, $set_name:ident, $value:expr, $offset:expr, $expected:expr) => {
             setget_test!(MutIpv4Packet, $name, $set_name, $value, $offset, $expected);

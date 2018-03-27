@@ -5,6 +5,10 @@ macro_rules! packet {
         pub struct $mut_name<'a>(&'a mut [u8]);
 
         impl<'a> $name<'a> {
+            /// The minimum number of bytes in this type of packet. Usually equal to the
+            /// header size of the protocol.
+            pub const MIN_LEN: usize = $min_len;
+
             /// Creates a new immutable packet based on the given backing slice. Returns `None` if
             /// the buffer is shorter than the minimum length of this packet.
             #[inline]
@@ -23,20 +27,6 @@ macro_rules! packet {
             #[inline]
             pub unsafe fn new_unchecked(data: &'a [u8]) -> $name<'a> {
                 $name(data)
-            }
-
-            /// Returns the minimum number of bytes in this type of packet. Usually equal to the
-            /// header size of this protocol.
-            #[inline]
-            pub fn min_len() -> usize {
-                $min_len
-            }
-
-            /// Returns the number of bytes in this packet. This is simply the length of the byte
-            /// slice backing the packet instance.
-            #[inline]
-            pub fn len(&self) -> usize {
-                self.0.len()
             }
 
             /// Returns a reference to the slice backing this packet.
@@ -61,6 +51,10 @@ macro_rules! packet {
         }
 
         impl<'a> $mut_name<'a> {
+            /// The minimum number of bytes in this type of packet. Usually equal to the
+            /// header size of the protocol.
+            pub const MIN_LEN: usize = $min_len;
+
             /// Creates a new mutable packet based on the given backing slice. Returns `None` if
             /// the buffer is shorter than the minimal length of this packet.
             #[inline]
@@ -86,20 +80,6 @@ macro_rules! packet {
             #[inline]
             pub fn as_immutable(&'a self) -> $name<'a> {
                 $name(&self.0[..])
-            }
-
-            /// Returns the minimum number of bytes in this type of packet. Usually equal to the
-            /// header size of this protocol.
-            #[inline]
-            pub fn min_len() -> usize {
-                $min_len
-            }
-
-            /// Returns the number of bytes in this packet. This is simply the length of the byte
-            /// slice backing the packet instance.
-            #[inline]
-            pub fn len(&self) -> usize {
-                self.0.len()
             }
 
             /// Returns a mutable reference to the slice backing this packet.
