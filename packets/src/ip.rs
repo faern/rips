@@ -6,6 +6,11 @@
 pub struct Protocol(pub u8);
 
 impl Protocol {
+    pub const ICMP: Protocol = Protocol(1);
+    pub const TCP: Protocol = Protocol(6);
+    pub const UDP: Protocol = Protocol(17);
+    pub const RESERVED: Protocol = Protocol(255);
+
     /// Returns the numeric representation of this protocol.
     #[inline]
     pub fn value(&self) -> u8 {
@@ -19,13 +24,4 @@ impl Protocol {
     pub fn is_experimental(&self) -> bool {
         self.0 >= 253 && self.0 <= 254
     }
-}
-
-pub mod protocols {
-    use super::Protocol;
-
-    pub const ICMP: Protocol = Protocol(1);
-    pub const TCP: Protocol = Protocol(6);
-    pub const UDP: Protocol = Protocol(17);
-    pub const RESERVED: Protocol = Protocol(255);
 }
