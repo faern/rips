@@ -42,11 +42,14 @@ impl EtherType {
     }
 }
 
+/// `EtherType`s as defined by
+/// https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml
 pub mod ether_types {
     use super::EtherType;
 
     pub const IPV4: EtherType = EtherType(0x0800);
     pub const ARP: EtherType = EtherType(0x0806);
+    pub const IPV6: EtherType = EtherType(0x86DD);
 }
 
 
