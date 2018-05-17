@@ -32,24 +32,22 @@ setters!(MutEthernetPacket
 );
 
 
+/// A representation of the 16 bit EtherType header field of an Ethernet packet.
+///
+/// A few select, commonly used, values are attached as associated constants. Their values are
+/// defined at https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct EtherType(pub u16);
 
 impl EtherType {
+    pub const IPV4: EtherType = EtherType(0x0800);
+    pub const ARP: EtherType = EtherType(0x0806);
+    pub const IPV6: EtherType = EtherType(0x86DD);
+
     #[inline]
     pub fn value(&self) -> u16 {
         self.0
     }
-}
-
-/// `EtherType`s as defined by
-/// https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml
-pub mod ether_types {
-    use super::EtherType;
-
-    pub const IPV4: EtherType = EtherType(0x0800);
-    pub const ARP: EtherType = EtherType(0x0806);
-    pub const IPV6: EtherType = EtherType(0x86DD);
 }
 
 

@@ -1,6 +1,6 @@
 extern crate rips_packets;
 
-use rips_packets::ethernet::{EthernetPacket, MacAddr, MutEthernetPacket, ether_types};
+use rips_packets::ethernet::{EthernetPacket, MacAddr, MutEthernetPacket, EtherType};
 
 fn main() {
     // Allocate a byte buffer that represents the bytes in the Ethernet frame.
@@ -15,7 +15,7 @@ fn main() {
         // Use the setter methods to change the data in `buffer`
         ethernet_packet.set_destination(MacAddr::broadcast());
         ethernet_packet.set_source(MacAddr([0x01, 0x02, 0x03, 0x04, 0x05, 0x06]));
-        ethernet_packet.set_ether_type(ether_types::IPV4);
+        ethernet_packet.set_ether_type(EtherType::IPV4);
 
         // When `ethernet_packet` goes out of scope, the mutable borrow of `buffer` ends
         // and we can access the buffer again.
@@ -29,4 +29,5 @@ fn main() {
     println!("Destination MAC: {}", pkg.destination());
     println!("Source MAC: {}", pkg.source());
     println!("EtherType: {:?}", pkg.ether_type());
+    println!("Packet data, including header: {:?}", pkg.data())
 }

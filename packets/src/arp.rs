@@ -1,4 +1,4 @@
-use ethernet::{ether_types, EtherType, MacAddr};
+use ethernet::{EtherType, MacAddr};
 use std::net::Ipv4Addr;
 
 packet!(ArpPacket, MutArpPacket, 28);
@@ -47,7 +47,7 @@ impl<'a> MutArpPacket<'a> {
     /// packet.
     pub fn set_ipv4_over_ethernet_values(&mut self) {
         self.set_hardware_type(hardware_types::ETHERNET);
-        self.set_protocol_type(ether_types::IPV4);
+        self.set_protocol_type(EtherType::IPV4);
         self.set_hardware_length(6);
         self.set_protocol_length(4);
     }
@@ -201,7 +201,7 @@ mod tests {
             hardware_types::ETHERNET,
             testee.as_immutable().hardware_type()
         );
-        assert_eq!(ether_types::IPV4, testee.as_immutable().protocol_type());
+        assert_eq!(EtherType::IPV4, testee.as_immutable().protocol_type());
         assert_eq!(6, testee.as_immutable().hardware_length());
         assert_eq!(4, testee.as_immutable().protocol_length());
     }
