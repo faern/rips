@@ -3,7 +3,7 @@ extern crate rips_packets;
 use rips_packets::ethernet::{EthernetPacket, MacAddr, MutEthernetPacket, EtherType};
 
 fn main() {
-    // Allocate a byte buffer that represents the bytes in the Ethernet frame.
+    // Allocate a byte buffer that hold the bytes in the Ethernet frame.
     let mut buffer = [0; 14];
 
     {
@@ -22,12 +22,12 @@ fn main() {
     }
 
     // Create an immutable representation of the ethernet frame based on the same
-    // buffer. Where a mutable `MutFooPacket` has setters `FooPacket` has the
+    // buffer. Where a mutable `MutEthernetPacket` has setters `EthernetPacket` has the
     // corresponding getters.
-    let pkg = EthernetPacket::new(&buffer[..]).expect("Too short buffer");
+    let packet = EthernetPacket::new(&buffer[..]).expect("Too short buffer");
 
-    println!("Destination MAC: {}", pkg.destination());
-    println!("Source MAC: {}", pkg.source());
-    println!("EtherType: {:?}", pkg.ether_type());
-    println!("Packet data, including header: {:?}", pkg.data())
+    println!("Destination MAC: {}", packet.destination());
+    println!("Source MAC: {}", packet.source());
+    println!("EtherType: {:?}", packet.ether_type());
+    println!("Packet data, including header: {:?}", packet.data())
 }
