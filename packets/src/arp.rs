@@ -46,7 +46,7 @@ impl<'a> MutArpPacket<'a> {
     /// protocol_length fields to correct values for an IPv4 over Ethernet
     /// packet.
     pub fn set_ipv4_over_ethernet_values(&mut self) {
-        self.set_hardware_type(hardware_types::ETHERNET);
+        self.set_hardware_type(HardwareType::ETHERNET);
         self.set_protocol_type(EtherType::IPV4);
         self.set_hardware_length(6);
         self.set_protocol_length(4);
@@ -96,31 +96,23 @@ setters!(MutArpPacket
 pub struct HardwareType(pub u16);
 
 impl HardwareType {
+    pub const ETHERNET: HardwareType = HardwareType(1);
+
     pub fn value(&self) -> u16 {
         self.0
     }
-}
-
-pub mod hardware_types {
-    use super::HardwareType;
-
-    pub const ETHERNET: HardwareType = HardwareType(1);
 }
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct Operation(pub u16);
 
 impl Operation {
+    pub const REQUEST: Operation = Operation(1);
+    pub const REPLY: Operation = Operation(2);
+
     pub fn value(&self) -> u16 {
         self.0
     }
-}
-
-pub mod operations {
-    use super::Operation;
-
-    pub const REQUEST: Operation = Operation(1);
-    pub const REPLY: Operation = Operation(2);
 }
 
 
@@ -198,7 +190,7 @@ mod tests {
         testee.set_ipv4_over_ethernet_values();
 
         assert_eq!(
-            hardware_types::ETHERNET,
+            HardwareType::ETHERNET,
             testee.as_immutable().hardware_type()
         );
         assert_eq!(EtherType::IPV4, testee.as_immutable().protocol_type());

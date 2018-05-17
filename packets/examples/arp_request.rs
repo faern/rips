@@ -1,6 +1,6 @@
 extern crate rips_packets;
 
-use rips_packets::arp::{MutArpPacket, operations};
+use rips_packets::arp::{MutArpPacket, Operation};
 use rips_packets::ethernet::{BROADCAST_MAC, MacAddr, MutEthernetPacket, EtherType};
 
 use std::net::Ipv4Addr;
@@ -56,7 +56,7 @@ fn format_arp_request<'a>(
     target_ip: Ipv4Addr,
 ) {
     packet.set_ipv4_over_ethernet_values();
-    packet.set_operation(operations::REQUEST);
+    packet.set_operation(Operation::REQUEST);
     packet.set_sender_mac_addr(src_mac);
     packet.set_sender_ip_addr(src_ip);
     // packet.set_target_mac_addr(); // Is ignored in a request anyway
