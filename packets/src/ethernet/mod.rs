@@ -35,7 +35,9 @@ setters!(MutEthernetPacket
 /// A representation of the 16 bit EtherType header field of an Ethernet packet.
 ///
 /// A few select, commonly used, values are attached as associated constants. Their values are
-/// defined at https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml
+/// defined on [IANA's website].
+///
+/// [IANA's website]: https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct EtherType(pub u16);
 
