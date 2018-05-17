@@ -2,9 +2,6 @@ use std::error::Error;
 use std::fmt;
 use std::str::FromStr;
 
-/// The broadcast MAC address. Used to broadcast to the local network.
-pub static BROADCAST_MAC: MacAddr = MacAddr([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
-
 #[derive(Debug, Eq, PartialEq)]
 pub struct MacAddrLengthError;
 
@@ -25,6 +22,9 @@ impl Error for MacAddrLengthError {
 pub struct MacAddr(pub [u8; 6]);
 
 impl MacAddr {
+    /// The broadcast MAC address. Used to broadcast to the local network.
+    pub const BROADCAST: MacAddr = MacAddr([0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+
     /// Constructs a `MacAddr` from a slice of bytes.
     /// Will fail if the given slice is not 6 bytes long.
     pub fn try_from_slice(slice: &[u8]) -> Result<MacAddr, MacAddrLengthError> {
@@ -47,12 +47,6 @@ impl MacAddr {
     /// Constructs a `MacAddr` from six individual bytes.
     pub fn from_bytes(b0: u8, b1: u8, b2: u8, b3: u8, b4: u8, b5: u8) -> MacAddr {
         MacAddr([b0, b1, b2, b3, b4, b5])
-    }
-
-    /// Creates a `MacAddr` with the broadcast address consisting of all one
-    /// bits.
-    pub fn broadcast() -> MacAddr {
-        BROADCAST_MAC
     }
 }
 

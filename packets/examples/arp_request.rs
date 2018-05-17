@@ -1,7 +1,7 @@
 extern crate rips_packets;
 
 use rips_packets::arp::{MutArpPacket, Operation};
-use rips_packets::ethernet::{BROADCAST_MAC, MacAddr, MutEthernetPacket, EtherType};
+use rips_packets::ethernet::{MacAddr, MutEthernetPacket, EtherType};
 
 use std::net::Ipv4Addr;
 
@@ -44,7 +44,7 @@ fn format_arp_request_frame(
 }
 
 fn format_broadcast_ethernet_arp<'a>(packet: &mut MutEthernetPacket<'a>, src_mac: MacAddr) {
-    packet.set_destination(BROADCAST_MAC);
+    packet.set_destination(MacAddr::BROADCAST);
     packet.set_source(src_mac);
     packet.set_ether_type(EtherType::ARP);
 }

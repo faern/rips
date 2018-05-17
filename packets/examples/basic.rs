@@ -13,7 +13,7 @@ fn main() {
             .expect("Too short buffer");
 
         // Use the setter methods to change the data in `buffer`
-        ethernet_packet.set_destination(MacAddr::broadcast());
+        ethernet_packet.set_destination(MacAddr::BROADCAST);
         ethernet_packet.set_source(MacAddr([0x01, 0x02, 0x03, 0x04, 0x05, 0x06]));
         ethernet_packet.set_ether_type(EtherType::IPV4);
 
